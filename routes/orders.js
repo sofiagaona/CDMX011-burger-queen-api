@@ -1,3 +1,7 @@
+const express = require('express');
+
+const ruta = express.Router();
+
 const {
   requireAuth,
 } = require('../middleware/auth');
@@ -31,6 +35,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    */
   app.get('/orders', requireAuth, (req, resp, next) => {
+    resp.json('funciona get de ordenes');
   });
 
   /**
@@ -143,3 +148,4 @@ module.exports = (app, nextMain) => {
 
   nextMain();
 };
+// module.exports = ruta;

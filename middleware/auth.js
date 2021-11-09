@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken');
+const config = require('../config');
+
+const { adminEmail, adminPassword } = config;
 
 module.exports = (secret) => (req, resp, next) => {
   const { authorization } = req.headers;
@@ -22,25 +25,26 @@ module.exports = (secret) => (req, resp, next) => {
   });
 };
 
-
-module.exports.isAuthenticated = (req) => (
+module.exports.isAuthenticated = (req) => {
+  if (req.body === adminEmail || req.body === adminPassword) {
+    return true;
+  }
   // TODO: decidir por la informacion del request si la usuaria esta autenticada
-  false
-);
+  return false;
+};
 
-
-module.exports.isAdmin = (req) => (
-  // TODO: decidir por la informacion del request si la usuaria es admin
-  false
-);
-
+module.exports.isAdmin = (req) => {
+  if (req.body === adminEmail || req.body === adminPassword) {
+    return true;
+  }
+  return false;
+};
 
 module.exports.requireAuth = (req, resp, next) => (
   (!module.exports.isAuthenticated(req))
     ? next(401)
     : next()
 );
-
 
 module.exports.requireAdmin = (req, resp, next) => (
   // eslint-disable-next-line no-nested-ternary
