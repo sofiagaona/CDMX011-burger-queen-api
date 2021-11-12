@@ -5,6 +5,7 @@ module.exports = {
     users()
       .then((doc) => {
         resp.status(200).json({ valor: doc });
+        next();
       })
       .catch((err) => {
         resp.status(400).json({ Error: err });

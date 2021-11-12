@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const { response } = require('express');
-const User = require('../model/model_user');
 const { UserSchema } = require('../schmas/schemaUser');
 const validateData = require('../middleware/schemaUser');
 const {

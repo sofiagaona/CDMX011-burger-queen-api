@@ -27,19 +27,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(authMiddleware(secret));
 
+app.listen(port, () => {
+  console.info(`App listening on port ${port}`);
+});
 // Registrar rutas
 routes(app, (err) => {
   if (err) {
     throw err;
   }
   // ruta
-  app.use('/auth', auth);
-  app.use('/orders', orders);
-  app.use('/products', products);
-  app.post('/users', users);
-  app.use(errorHandler);
-
-  app.listen(port, () => {
-    console.info(`App listening on port ${port}`);
-  });
+  // app.use('/auth', auth);
+  // app.use('/orders', orders);
+  // app.use('/products', products);
+  app.use('/users', users);
+// app.use(errorHandler);
 });

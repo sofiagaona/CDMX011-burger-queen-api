@@ -1,10 +1,8 @@
-const express = require('express');
-
-const ruta = express.Router();
-
 const {
   requireAuth,
 } = require('../middleware/auth');
+const Orders = require('../model/orders');
+const { create } = require('../controller/orders');
 
 /** @module orders */
 module.exports = (app, nextMain) => {
@@ -34,8 +32,8 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/orders', requireAuth, (req, resp, next) => {
-    resp.json('funciona get de ordenes');
+  app.get('/orders', /* requireAuth, */ (req, resp, next) => {
+    resp.send('funcionando get de orders');
   });
 
   /**
@@ -88,9 +86,7 @@ module.exports = (app, nextMain) => {
    * @code {400} no se indica `userId` o se intenta crear una orden sin productos
    * @code {401} si no hay cabecera de autenticación
    */
-  app.post('/orders', requireAuth, (req, resp, next) => {
-  });
-
+  app.post('/orders', /* requireAuth */ create);
   /**
    * @name PUT /orders
    * @description Modifica una orden
@@ -148,4 +144,3 @@ module.exports = (app, nextMain) => {
 
   nextMain();
 };
-// module.exports = ruta;
