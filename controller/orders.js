@@ -1,6 +1,26 @@
 const Orders = require('../model/orders');
 
 module.exports = {
+  read: (req, resp, next) => {
+    readOrders()
+      .then((doc) => {
+        resp.status(200).json({ valor: doc });
+        next();
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
+  readById: (req, resp, next) => {
+    readOrdersById(req.params._id)
+      .then((doc) => {
+        resp.status(200).json({ valor: doc });
+        next();
+      })
+      .catch((err) => {
+        next(err);
+      });
+  },
   create: (req, resp, next) => {
     const body = req.body;
     createOrder(body)
@@ -13,6 +33,16 @@ module.exports = {
       });
   },
 };
+
+async function readOrders() {
+  const orders = await Orders.find({ estado: true });
+  return orders;
+}
+
+async function readOrdersById(id) {
+  const orderById = await Orders.findById(id);
+  return orderById;
+}
 
 async function createOrder(body) {
   const order = Orders({

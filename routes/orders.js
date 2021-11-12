@@ -1,8 +1,7 @@
 const {
   requireAuth,
 } = require('../middleware/auth');
-const Orders = require('../model/orders');
-const { create } = require('../controller/orders');
+const { create, read, readById } = require('../controller/orders');
 
 /** @module orders */
 module.exports = (app, nextMain) => {
@@ -32,9 +31,7 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/orders', /* requireAuth, */ (req, resp, next) => {
-    resp.send('funcionando get de orders');
-  });
+  app.get('/orders', /* requireAuth, */ read);
 
   /**
    * @name GET /orders/:orderId
@@ -57,8 +54,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orden con `orderId` indicado no existe
    */
-  app.get('/orders/:orderId', requireAuth, (req, resp, next) => {
-  });
+  app.get('/orders/:_id', /* requireAuth, */ readById);
 
   /**
    * @name POST /orders
