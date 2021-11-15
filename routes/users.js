@@ -99,7 +99,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.get('/users/:_id'/* requireAuth */, getUserById);
+  app.get('/users/:_id', requireAuth, getUserById);
 
   /**
    * @name POST /users
@@ -144,7 +144,7 @@ module.exports = (app, next) => {
    * @code {403} una usuaria no admin intenta de modificar sus `roles`
    * @code {404} si la usuaria solicitada no existe
    */
-  app.put('/users/:_id', validateData(UserSchema), /* requireAuth, */ putUser);
+  app.put('/users/:_id', /* requireAuth, */ putUser);
 
   /**
    * @name DELETE /users

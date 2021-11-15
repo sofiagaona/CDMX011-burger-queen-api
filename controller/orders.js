@@ -65,7 +65,7 @@ async function readOrdersById(id) {
 }
 
 async function createOrder(body) {
-  const order = Orders({
+  const order = new Orders({
     userId: body.userId,
     cliente: body.cliente,
     products: body.products,

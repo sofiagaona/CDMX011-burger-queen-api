@@ -20,13 +20,16 @@ module.exports = (secret) => (req, resp, next) => {
     if (err) {
       return next(403);
     }
+    req.usuario = decodedToken.usuario;
+    next();
 
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
   });
 };
 
 module.exports.isAuthenticated = (req) => {
-  if (req.body === adminEmail || req.body === adminPassword) {
+  console.info(req.body);
+  if (req.body.email === adminEmail || req.body.password === adminPassword) {
     return true;
   }
   // TODO: decidir por la informacion del request si la usuaria esta autenticada

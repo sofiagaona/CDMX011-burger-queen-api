@@ -29,12 +29,24 @@ module.exports = (app, nextMain) => {
       .then((datos) => {
         if (datos) {
           const passwordValido = bcrypt.compareSync(password, datos.password);
-          if (!passwordValido) return resp.status(400).JSON({ error: 'ok', msj: 'el usario o contraseña son incorrestos' });
-          resp.JSON(datos);
+          if (!passwordValido) return resp.status(400).json({ error: 'ok', msj: 'el usario o contraseña son incorrestos' });
+          const jwtToken = jwt.sign({
+            _id: datos._id,
+            email: datos.email,
+            admin: datos.roles.admin,
+          }, secret);
+          resp.json({
+            usuario: {
+              _id: datos._id,
+              email: datos.email,
+              admin: datos.roles.admin,
+            },
+            jwtToken,
+          });
         }
       })
       .catch((err) => {
-        resp.status(400).JSON({
+        resp.status(400).json({
           error: 'ok',
           msj: `Error en el servidor ${err}`,
         });
