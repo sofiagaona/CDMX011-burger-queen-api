@@ -1,4 +1,5 @@
 const Orders = require('../model/orders');
+const id = require('../middleware/auth');
 
 module.exports = {
   read: (req, resp, next) => {
@@ -22,8 +23,7 @@ module.exports = {
       });
   },
   create: (req, resp, next) => {
-    const body = req.body;
-    createOrder(body)
+    createOrder(req)
       .then((doc) => {
         resp.status(200).json({ valor: doc });
         next();
@@ -64,16 +64,16 @@ async function readOrdersById(id) {
   return orderById;
 }
 
-async function createOrder(body) {
+async function createOrder(req) {
   const order = new Orders({
-    userId: body.userId,
-    cliente: body.cliente,
-    products: body.products,
-    product: body.products.product,
-    cantidad: body.products.cantidad,
-    status: body.status,
-    dateEnry: body.dateEntry,
-    dateProcessed: body.dateProcessed,
+    userId: id.id,
+    cliente: req.body.cliente,
+    products: req.body.products,
+    product: req.body.product,
+    cantidad: req.body.cantidad,
+    status: req.body.status,
+    dateEnry: req.body.dateEntry,
+    dateProcessed: req.body.dateProcessed,
   });
   const result = await order.save();
   return result;

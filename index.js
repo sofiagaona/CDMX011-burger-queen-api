@@ -5,10 +5,10 @@ const authMiddleware = require('./middleware/auth');
 const errorHandler = require('./middleware/error');
 const routes = require('./routes');
 const pkg = require('./package.json');
-const orders = require('./routes/orders');
-const products = require('./routes/products');
+// const orders = require('./routes/orders');
+// const products = require('./routes/products');
 const users = require('./routes/users');
-const auth = require('./routes/auth');
+// const auth = require('./routes/auth');
 
 const { port, dbUrl, secret } = config;
 const app = express();
@@ -39,6 +39,7 @@ routes(app, (err) => {
   // app.use('/auth', auth);
   // app.use('/orders', orders);
   // app.use('/products', products);
-  app.use('/users', users);
-// app.use(errorHandler);
+  // app.use('/users', users);
+  // app.use(errorHandler);
 });
+module.exports = app;

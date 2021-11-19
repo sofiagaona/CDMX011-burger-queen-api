@@ -37,7 +37,7 @@ module.exports = (app, nextMain) => {
    * @code {200} si la autenticación es correcta
    * @code {401} si no hay cabecera de autenticación
    */
-  app.get('/orders', /* requireAuth, */ read);
+  app.get('/orders', requireAuth, read);
 
   /**
    * @name GET /orders/:orderId
@@ -60,7 +60,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si la orden con `orderId` indicado no existe
    */
-  app.get('/orders/:_id', /* requireAuth, */ readById);
+  app.get('/orders/:_id', requireAuth, readById);
 
   /**
    * @name POST /orders
@@ -88,7 +88,7 @@ module.exports = (app, nextMain) => {
    * @code {400} no se indica `userId` o se intenta crear una orden sin productos
    * @code {401} si no hay cabecera de autenticación
    */
-  app.post('/orders', /* requireAuth */ create);
+  app.post('/orders', requireAuth, create);
   /**
    * @name PUT /orders
    * @description Modifica una orden
@@ -140,7 +140,7 @@ module.exports = (app, nextMain) => {
    * @code {401} si no hay cabecera de autenticación
    * @code {404} si el producto con `orderId` indicado no existe
    */
-  app.delete('/orders/:_id', /* requireAuth, */ deleteOrder);
+  app.delete('/orders/:_id', requireAuth, deleteOrder);
 
   nextMain();
 };

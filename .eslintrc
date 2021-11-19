@@ -20,6 +20,7 @@
     }, {
       "enforceForRenamedProperties": false
     }],
-    "no-use-before-define": ["off", { "functions": true, "classes": true }]
+    "no-use-before-define": ["off", { "functions": true, "classes": true }],
+    "no-unused-vars": ["off", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
   }
 }

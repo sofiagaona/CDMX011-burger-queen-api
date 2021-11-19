@@ -1,7 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('../config');
-
-const { adminEmail, adminPassword } = config;
+const User = require('../model/model_user');
 
 module.exports = (secret) => (req, resp, next) => {
   const { authorization } = req.headers;
@@ -17,31 +15,33 @@ module.exports = (secret) => (req, resp, next) => {
   }
 
   jwt.verify(token, secret, (err, decodedToken) => {
+    req.local = decodedToken;
+    const id = decodedToken._id;
     if (err) {
       return next(403);
     }
-    req.usuario = decodedToken.usuario;
-    next();
+
+    // module.exports.isAuthenticated(req, id);
+    module.exports.id = { id };
+    return next();
 
     // TODO: Verificar identidad del usuario usando `decodeToken.uid`
   });
 };
 
-module.exports.isAuthenticated = (req) => {
-  console.info(req.body);
-  if (req.body.email === adminEmail || req.body.password === adminPassword) {
-    return true;
-  }
-  // TODO: decidir por la informacion del request si la usuaria esta autenticada
-  return false;
-};
+module.exports.isAuthenticated = (req) => (
+  !(!req.local)
+  /* const userId = await User.findOne({ _id: id });
+  if (userId === null) { return false; }
+  return true; */
+);
+// TODO: decidir por la informacion del request si la usuaria esta autenticada
+// false
 
-module.exports.isAdmin = (req) => {
-  if (req.body === adminEmail || req.body === adminPassword) {
-    return true;
-  }
-  return false;
-};
+module.exports.isAdmin = (req) => (
+  // TODO: decidir por la informacion del request si la usuaria es admin
+  false
+);
 
 module.exports.requireAuth = (req, resp, next) => (
   (!module.exports.isAuthenticated(req))

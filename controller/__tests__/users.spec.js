@@ -1,6 +1,10 @@
+const supertest = require('supertest');
+const app = require('../../index');
+
+const api = supertest(app);
 const {
   getUsers,
-} = require('../../controller/users');
+} = require('../users');
 
 describe('getUsers', () => {
   it('should get users collection', (done) => {
