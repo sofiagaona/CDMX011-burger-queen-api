@@ -39,8 +39,9 @@ module.exports.isAuthenticated = (req) => (
 // false
 
 module.exports.isAdmin = (req) => (
+  !!(req.local.admin)
   // TODO: decidir por la informacion del request si la usuaria es admin
-  false
+  // false
 );
 
 module.exports.requireAuth = (req, resp, next) => (
