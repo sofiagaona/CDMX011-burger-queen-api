@@ -3,7 +3,7 @@ const User = require('../model/model_user');
 
 module.exports = {
   getUsers: (req, resp, next) => {
-    users()
+    users(req)
       .then((doc) => {
         resp.status(200).json({ valor: doc });
         next();
@@ -62,8 +62,15 @@ async function getUserId(reqId) {
   return userById;
 }
 
-async function users() {
-  const getUsers = await User.find({ estado: true }).select({ email: 1, roles: 1 });
+async function users(req) {
+  const pageOptions = {
+    page: req.query.page || 0,
+    limit: req.query.limit || 10,
+  };
+  const getUsers = await User.find({ estado: true })
+    .skip(pageOptions.page * pageOptions.limit)
+    .limit(pageOptions.limit)
+    .select({ email: 1, roles: 1 });
   return getUsers;
 }
 
