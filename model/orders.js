@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 
+const productsSchema = new mongoose.Schema({
+  productId: { type: String, required: true },
+  qty: { type: Number, required: true },
+});
+
 const orderSchema = new mongoose.Schema({
   userId: { type: Object, required: true },
   // userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   cliente: { type: String, required: true },
-  products: [{
-    product: { type: String, required: true },
-    qty: { type: Number, required: false },
-  }],
+  products: [productsSchema],
   status: { type: String, required: true },
   dateEnry: { type: Date, default: Date.now },
   dateProcessed: { type: Date },

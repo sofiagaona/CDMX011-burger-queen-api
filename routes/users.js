@@ -137,7 +137,7 @@ module.exports = (app, next) => {
    * @code {403} una usuaria no admin intenta de modificar sus `roles`
    * @code {404} si la usuaria solicitada no existe
    */
-  app.put('/users/:_id', requireAuth, users.putUser);
+  app.put('/users/:params', requireAuth, users.putUser);
 
   /**
    * @name DELETE /users
@@ -155,7 +155,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.delete('/users/:_id', requireAuth, users.deleteUsers);
+  app.delete('/users/', requireAuth, users.deleteUsers);
 
   initAdminUser(app, next);
 };

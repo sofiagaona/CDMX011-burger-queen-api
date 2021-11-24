@@ -5,7 +5,7 @@ module.exports = {
   getUsers: (req, resp, next) => {
     users(req)
       .then((doc) => {
-        resp.status(200).json({ valor: doc });
+        resp.status(200).json({ users: doc });
         next();
       })
       .catch((err) => {
@@ -14,14 +14,12 @@ module.exports = {
   },
 
   getUserById: (req, resp, next) => {
-    getUserId(req.params._id)
+    getUserId(req.params)
       .then((doc) => {
-        resp.status(200).json({ valor: doc });
-        next();
+        resp.status(200).json({ doc });
+        return next();
       })
-      .catch((err) => {
-        next(err);
-      });
+      .catch((err) => next(err));
   },
   createUsers: (req, res, next) => {
     const body = req.body;
@@ -36,9 +34,9 @@ module.exports = {
   },
   putUser: (req, resp, next) => {
     const body = req.body;
-    updateUser(req.params._id, body)
+    updateUser(req.params, body)
       .then((doc) => {
-        resp.status(200).json({ email: doc.email, roles: doc.roles });
+        resp.status(200).json({ users: doc });
         next();
       })
       .catch((err) => {
@@ -46,7 +44,7 @@ module.exports = {
       });
   },
   deleteUsers: (req, resp, next) => {
-    deleteUser(req.params._id)
+    deleteUser(req.query)
       .then((document) => {
         resp.status(200).json({ email: document.email, roles: document.roles });
         next();
@@ -57,8 +55,9 @@ module.exports = {
   },
 };
 
-async function getUserId(reqId) {
-  const userById = await User.find({ _id: reqId }).select({ email: 1, roles: 1 });
+async function getUserId(req) {
+  console.info(req);
+  const userById = await User.find({ _id: req }).select({ email: 1, roles: 1 });
   return userById;
 }
 
@@ -85,8 +84,30 @@ async function createUser(body) {
   return result;
 }
 
-async function updateUser(id, body) {
-  const userUpdate = await User.findByIdAndUpdate({ _id: id }, {
+async function updateUser(param, body) {
+  const value = Object.values(param);
+  const update = {
+    email: body.email,
+    password: body.password,
+    roles: body.roles,
+    admin: body.admin,
+    estado: body.estado,
+  };
+  const usersEmail = await User.find({ email: value[0] });
+  if (usersEmail.length !== 0) {
+    const userById = await User.findOneAndUpdate({ email: value[0] }, {
+      $set: update,
+    }, { new: true });
+    return userById;
+  }
+  if (usersEmail.length === 0) {
+    const userUpdate = await User.findOneAndUpdate({ _id: value[0] }, {
+      $set: update,
+    }, { new: true });
+    return userUpdate;
+  }
+
+  /* const userUpdate = await User.findOneAndUpdate(({ email: value[0] } || { _id: value[0] }), {
     $set: {
       email: body.email,
       password: body.password,
@@ -95,11 +116,12 @@ async function updateUser(id, body) {
       estado: body.estado,
     },
   }, { new: true });
-  return userUpdate;
+  console.info(userUpdate);
+  return userUpdate; */
 }
 
 async function deleteUser(id) {
-  const userDelete = await User.findByIdAndUpdate({ _id: id }, {
+  const userDelete = await User.findOneAndUpdate(id, {
     $set: {
       estado: false,
     },

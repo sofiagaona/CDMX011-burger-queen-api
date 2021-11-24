@@ -5,7 +5,7 @@ module.exports = {
   read: (req, resp, next) => {
     readOrders()
       .then((doc) => {
-        resp.status(200).json({ valor: doc });
+        resp.status(200).json({ orders: doc });
         next();
       })
       .catch((err) => {
@@ -15,7 +15,7 @@ module.exports = {
   readById: (req, resp, next) => {
     readOrdersById(req.params._id)
       .then((doc) => {
-        resp.status(200).json({ valor: doc });
+        resp.status(200).json({ orders: doc });
         next();
       })
       .catch((err) => {
@@ -25,7 +25,7 @@ module.exports = {
   create: (req, resp, next) => {
     createOrder(req)
       .then((doc) => {
-        resp.status(200).json({ valor: doc });
+        resp.status(200).json({ orders: doc });
         next();
       })
       .catch((err) => {
@@ -35,7 +35,7 @@ module.exports = {
   update: (req, resp, next) => {
     updateOrders(req.params._id, req.body)
       .then((doc) => {
-        resp.status(200).json({ valor: doc });
+        resp.status(200).json({ orders: doc });
         next();
       })
       .catch((err) => {
@@ -45,7 +45,7 @@ module.exports = {
   deleteOrder: (req, resp, next) => {
     deleteOrders(req.params._id)
       .then((doc) => {
-        resp.status(200).json({ valor: doc });
+        resp.status(200).json({ orders: doc });
         next();
       })
       .catch((err) => {
@@ -69,8 +69,8 @@ async function createOrder(req) {
     userId: id.id,
     cliente: req.body.cliente,
     products: req.body.products,
-    product: req.body.product,
-    cantidad: req.body.cantidad,
+    // productId: req.body.productId,
+    // qty: req.body.qty,
     status: req.body.status,
     dateEnry: req.body.dateEntry,
     dateProcessed: req.body.dateProcessed,
