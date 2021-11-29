@@ -44,9 +44,9 @@ module.exports = {
       });
   },
   deleteUsers: (req, resp, next) => {
-    deleteUser(req.query)
-      .then((document) => {
-        resp.status(200).json({ email: document.email, roles: document.roles });
+    deleteUser(req.params._id)
+      .then((doc) => {
+        resp.status(200).json({ doc });
         next();
       })
       .catch((err) => {
@@ -56,7 +56,6 @@ module.exports = {
 };
 
 async function getUserId(req) {
-  console.info(req);
   const userById = await User.find({ _id: req }).select({ email: 1, roles: 1 });
   return userById;
 }
@@ -121,10 +120,10 @@ async function updateUser(param, body) {
 }
 
 async function deleteUser(id) {
-  const userDelete = await User.findOneAndUpdate(id, {
+  const deleteUser = await User.findByIdAndUpdate({ _id: id }, {
     $set: {
       estado: false,
     },
   }, { new: true });
-  return userDelete;
+  return deleteUser;
 }

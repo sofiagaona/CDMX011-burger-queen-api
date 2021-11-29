@@ -13,7 +13,7 @@ module.exports = {
   },
 
   readById: (req, resp, next) => {
-    getProductsId(req.params._id)
+    getProductsId(req.params.productId)
       .then((doc) => {
         resp.status(200).json({ products: doc });
         next();
@@ -35,7 +35,7 @@ module.exports = {
   },
   updateProduct: (req, resp, next) => {
     const body = req.body;
-    updateProduct(req.params._id, body)
+    updateProduct(req.params.productId, body)
       .then((doc) => {
         resp.status(200).json({ products: doc });
         next();
@@ -45,7 +45,7 @@ module.exports = {
       });
   },
   delete: (req, resp, next) => {
-    deleteProduct(req.params._id)
+    deleteProduct(req.params.productId)
       .then((document) => {
         resp.status(200).json({ products: document });
         next();
@@ -58,6 +58,7 @@ module.exports = {
 
 async function getProductsId(reqId) {
   const productById = await Products.find({ _id: reqId });
+  console.info(productById);
   return productById;
 }
 
@@ -101,7 +102,7 @@ async function updateProduct(id, body) {
 async function deleteProduct(id) {
   const deleteProduct = await Products.findByIdAndUpdate({ _id: id }, {
     $set: {
-      estado: false,
+      status: false,
     },
   }, { new: true });
   return deleteProduct;

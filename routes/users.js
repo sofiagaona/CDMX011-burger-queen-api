@@ -155,7 +155,7 @@ module.exports = (app, next) => {
    * @code {403} si no es ni admin o la misma usuaria
    * @code {404} si la usuaria solicitada no existe
    */
-  app.delete('/users/', requireAuth, users.deleteUsers);
+  app.delete('/users/:_id', requireAuth, users.deleteUsers);
 
   initAdminUser(app, next);
 };
