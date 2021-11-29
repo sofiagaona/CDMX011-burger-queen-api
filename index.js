@@ -12,8 +12,8 @@ const app = express();
 
 // TODO: Conexión a la Base de Datos (MongoDB o MySQL)
 
-// mongoose.connect('mongodb+srv://sofia:hegs8305265h3@cluster0.ju5dc.mongodb.net/test')
-mongoose.connect(dbUrl)
+mongoose.connect('mongodb+srv://sofia:hegs8305265h3@cluster0.ju5dc.mongodb.net/test')
+// mongoose.connect(dbUrl)
   .then(() => console.info('Se ha conectado a mongoose'))
   .catch((err) => console.info('No se puede conectar a mongoose', err));
 
